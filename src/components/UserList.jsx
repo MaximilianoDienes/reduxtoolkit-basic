@@ -1,38 +1,29 @@
-import React from 'react'
+import React from 'react';
+import { fetchAllProducts } from '../store/slices/products';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const UserList = () => {
-  const users = [
-    {
-      "id": 1,
-      "email": "george.bluth@reqres.in",
-      "first_name": "George",
-      "last_name": "Bluth",
-      "avatar": "https://reqres.in/img/faces/1-image.jpg"
-    },
-    {
-      "id": 2,
-      "email": "janet.weaver@reqres.in",
-      "first_name": "Janet",
-      "last_name": "Weaver",
-      "avatar": "https://reqres.in/img/faces/2-image.jpg"
-    },
-    {
-      "id": 3,
-      "email": "emma.wong@reqres.in",
-      "first_name": "Emma",
-      "last_name": "Wong",
-      "avatar": "https://reqres.in/img/faces/3-image.jpg"
-    }
-  ];
+
+  const dispatch = useDispatch();
+
+  const { list: products } = useSelector((state) => state.products)
+
+
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [])
 
   return (
-    <div>
+    <div className='flex flex-col items-center'>
       {
-        users.map((user, index) => (
-          <div key={index}>
-            <h3>{user.first_name} {user.last_name}</h3>
-            <h4>{user.email}</h4>
-            <img src={user.avatar}></img>
+        products.map((product, index) => (
+          <div key={index}  className='shadow-2xl w-1/2 flex flex-col items-center my-8 rounded-md border-2 border-slate-600 px-4 py-8'>
+            <h3 className='font-semibold text-lg my-1'>{product.title}</h3>
+            <h4 className='font-semibold my-1 rounded-md border-2 px-2 py-1 bg-slate-200'>{'$' + product.price}</h4>
+            <h4 className='font-medium my-4 rounded-md border-2 px-2 py-1 bg-slate-200 '>{product.description}</h4>
+            <img src={product.image} className="w-1/3 my-6"></img>
+            <button className="my-2 bg-blue-500 text-white font-bold py-2 px-4 rounded border-2 border-black w-1/3">buy!</button>
           </div>
         ))
       }
